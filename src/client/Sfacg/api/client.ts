@@ -102,8 +102,8 @@ export class SfacgClient extends SfacgHttp {
             });
             return res.status.httpCode == 200 || 201;
         } catch (err: any) {
-            const errMsg = err.response.data.status.msg;
-            console.error(`POST androiddeviceinfos failed: ${JSON.stringify(errMsg)}`);
+            const errMsg = err.response;
+            console.error(`POST androiddeviceinfos failed: ${errMsg}`);
             return false;
         }
     }
@@ -168,8 +168,8 @@ export class SfacgClient extends SfacgHttp {
             });
             return expire as IexpiredInfo[];
         } catch (err: any) {
-            const errMsg = err.response.data.status.msg;
-            console.error(`GET expireInfo failed: ${JSON.stringify(errMsg)}`);
+            const errMsg = err.response;
+            console.error("GET expireInfo failed");
             return false;
         }
     }
@@ -451,8 +451,8 @@ export class SfacgClient extends SfacgHttp {
             await this.taskBonus(id);
             return res.status.httpCode == 200;
         } catch (err: any) {
-            const errMsg = err.response.data;
-            console.error(`PUT adBonus failed: ${JSON.stringify(errMsg)}`);
+            const errMsg = err.response;
+            console.error("PUT adBonus failed: ");
             return false;
         }
     }
@@ -498,7 +498,7 @@ export class SfacgClient extends SfacgHttp {
             const res = await this.post<claimTask>(`/user/tasks/${id}`, {});
             return res.status.httpCode == 201;
         } catch (err: any) {
-            const errMsg = err.response
+            const errMsg = err.response;
             if (errMsg == "不能重复领取日常任务哦~") {
                 return true;
             }
@@ -519,8 +519,8 @@ export class SfacgClient extends SfacgHttp {
             });
             return res.status.httpCode == 200;
         } catch (err: any) {
-            const errMsg = err.response.data.status.msg;
-            console.error(`PUT readTime failed: ${JSON.stringify(errMsg)}`);
+            const errMsg = err.response;
+            console.error(`PUT readTime failed: ${errMsg}`);
             return false;
         }
     }
@@ -533,8 +533,8 @@ export class SfacgClient extends SfacgHttp {
             });
             return res.status.httpCode == 200;
         } catch (err: any) {
-            const errMsg = err.response.data.status.msg;
-            console.error(`PUT share failed: ${JSON.stringify(errMsg)}`);
+            const errMsg = err.response;
+            console.error(`PUT share failed: ${errMsg}`);
             return false;
         }
     }

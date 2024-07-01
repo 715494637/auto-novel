@@ -168,7 +168,7 @@ export class _SfacgDownloader {
                     _SfacgCache.GetChapterContent(_chapter.chapId)
                 );
 
-                return await this.ParseChapter(chapterContent, _chapter);
+                return await this.ParseChapter(chapterContent!, _chapter);
             }
             // 下载免费章节
             if (_chapter.needFireMoney === 0) {

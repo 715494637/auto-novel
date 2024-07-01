@@ -15,6 +15,7 @@ export class Sfacg {
         console.log(colorize("4. 多账号提书", "blue"));
         console.log(colorize("5. 注册机启动！", "blue"));
         console.log(colorize("6. 数据库中下载", "blue"));
+        console.log(colorize("7. 数据库内容迁移，建议先做备份", "blue"));
         const option = await question(colorize("请输入选项的数字：", "green"));
         switch (option) {
             case "1":
@@ -34,6 +35,9 @@ export class Sfacg {
                 break;
             case "6":
                 this.ServerDownload();
+                break;
+            case "7":
+                this.S3move();
                 break;
             default:
                 console.log(colorize("输入的选项不正确，请重新输入。", "yellow"));
@@ -78,6 +82,16 @@ export class Sfacg {
         await _SfacgTasker.TaskAll();
     }
 
+    async S3move() {
+        console.log("注意要先到SupaBase中将content设置为AllowNulladble");
+        console.log("注册tebi后env中要添加以下下三样\nACCESSKEYID=\nSECRETACCESSKEY=\nBUCKET=");
+        console.log("2s后开始迁移");
+        await new Promise((r) => {
+            setTimeout(r, 2000);
+        });
+        
+    }
+
     async Multi() {
         const m = new Multi();
         const a = new SfacgClient();
@@ -86,11 +100,9 @@ export class Sfacg {
         const id = await selectBookFromList(books as any[]);
         const onId = await question("（无则直接回车）请输入起始Id：");
         await m.MultiBuy(id, onId as number);
-        const t = await question("（需要下载本地直接回车）");
-        if (!t) {
-            const d = new _SfacgDownloader();
-            await d.DownLoad("db", id);
-        }
+        await question("（需要下载本地直接回车）");
+        const d = new _SfacgDownloader();
+        await d.DownLoad("db", id);
     }
 
     async ServerDownload() {

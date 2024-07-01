@@ -22,15 +22,17 @@ export class _SfacgTasker {
             const tasks = accounts.map(async (account) => {
                 const { result, anonClient } = await SfacgClient.initClient(account, "getTasks"); // 初始化客户端
                 const tasker = new _SfacgTasker(anonClient);
-                await tasker.claimTasks(result);
-                await tasker.performRituals(account.accountId);
-                await tasker.checkAndClaimRewards();
-                await tasker.handleAdRewards();
-                await tasker.BonusLog(account.userName);
+                try {
+                    await tasker.claimTasks(result);
+                    await tasker.performRituals(account.accountId);
+                    await tasker.checkAndClaimRewards();
+                    await tasker.handleAdRewards();
+                    await tasker.BonusLog(account.userName);
+                } catch (e) {}
                 account.cookie = anonClient.GetCookie();
                 return _SfacgCache.UpdateAccount(account);
             });
-            await Promise.all(tasks);
+            await Promise.allSettled(tasks);
         }
     }
 
@@ -44,12 +46,16 @@ export class _SfacgTasker {
     // 祖传三件套
     async performRituals(accountID: number, retry = 3) {
         if (retry > 0) {
-            await this.Client.readTime(120); // 阅读时长
-            await this.Client.share(accountID); // 每日分享
-            await this.Client.androiddeviceinfos(accountID); // 上报设备信息
-            const signInfo = await this.Client.newSign(); // 签到
-            retry--;
-            signInfo ? this.success.push("签到成功") : await this.performRituals(accountID, retry);
+            try {
+                await this.Client.readTime(120); // 阅读时长
+                await this.Client.share(accountID); // 每日分享
+                await this.Client.androiddeviceinfos(accountID); // 上报设备信息
+                const signInfo = await this.Client.newSign(); // 签到
+                retry--;
+                signInfo
+                    ? this.success.push("签到成功")
+                    : await this.performRituals(accountID, retry);
+            } catch (e) {}
         }
     }
 

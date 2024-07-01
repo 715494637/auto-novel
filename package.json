@@ -21,6 +21,8 @@
         "typescript": "^5.4.5"
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.606.0",
+        "@smithy/types": "^3.3.0",
         "@supabase/supabase-js": "^2.43.4",
         "axios": "^1.7.2",
         "cli-table3": "^0.6.5",
