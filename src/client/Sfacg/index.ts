@@ -5,6 +5,7 @@ import { _SfacgRegister } from "./handler/register";
 import { _SfacgDownloader } from "./handler/download";
 import { Multi } from "./handler/multi";
 import { SfacgClient } from "./api/client";
+import { DEV } from "./handler/DEV";
 
 export class Sfacg {
     async init() {
@@ -89,7 +90,7 @@ export class Sfacg {
         await new Promise((r) => {
             setTimeout(r, 2000);
         });
-        
+        await DEV();
     }
 
     async Multi() {
